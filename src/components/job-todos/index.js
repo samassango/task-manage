@@ -55,6 +55,27 @@ const board = {
         },
       ],
     },
+    {
+      id: 4,
+      title: "Done",
+      cards: [
+        {
+          id: 12,
+          title: "Card title 12",
+          description: "Card content",
+        },
+        {
+          id: 13,
+          title: "Card title 13",
+          description: "Card content",
+        },
+        {
+          id: 14,
+          title: "Card title 14",
+          description: "Card content",
+        },
+      ],
+    },
   ],
 };
 
