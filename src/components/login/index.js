@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -12,6 +12,10 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import * as actions from "../../actions/user.actions";
+import LoadingIndicator from "../shared/loadingIndicator";
 
 function Copyright() {
   return (
@@ -48,6 +52,33 @@ const useStyles = makeStyles((theme) => ({
 
 const SignIn = () => {
   const classes = useStyles();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const history = useHistory();
+
+  const currentUser = useSelector((state) => state.user.currentUser);
+
+  const isLoginLoading = useSelector((state) => state.user.isLoginLoading);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setUsername("");
+    setPassword("");
+    if (currentUser && currentUser.id) {
+      history.push("/");
+    }
+
+    return () => false;
+  }, [currentUser, history]);
+
+  const handleOnClickSignIn = () => {
+    setSubmitted(true);
+    return dispatch(actions.authenticateUser({ username, password }));
+  };
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -68,6 +99,8 @@ const SignIn = () => {
             label="Email Address"
             name="email"
             autoComplete="email"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             autoFocus
           />
           <TextField
@@ -79,18 +112,23 @@ const SignIn = () => {
             label="Password"
             type="password"
             id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             autoComplete="current-password"
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
+          {isLoginLoading && <LoadingIndicator />}
           <Button
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
+            disabled={isLoginLoading}
+            onClick={handleOnClickSignIn}
           >
             Sign In
           </Button>
