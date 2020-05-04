@@ -74,7 +74,7 @@ const SignUp = () => {
   const [terms, setTerms] = useState(false);
   const [error, setError] = useState("");
   const [skills, setSkill] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+
   const dispatch = useDispatch();
   const isLoadingSignup = useSelector((state) => state.user.isSignUpLoading);
   const signup = useSelector((state) => state.user.signup);
@@ -93,7 +93,6 @@ const SignUp = () => {
   }, [signup]);
 
   const handleOnClickSubmit = () => {
-    setSubmitted(true);
     if (dataValidation()) {
       return dispatch(
         actions.createUserAccount({

@@ -54,7 +54,6 @@ const SignIn = () => {
   const classes = useStyles();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [submitted, setSubmitted] = useState(false);
 
   const history = useHistory();
 
@@ -75,7 +74,6 @@ const SignIn = () => {
   }, [currentUser, history]);
 
   const handleOnClickSignIn = () => {
-    setSubmitted(true);
     return dispatch(actions.authenticateUser({ username, password }));
   };
 
