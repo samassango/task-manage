@@ -9,6 +9,11 @@ import MenuIcon from "@material-ui/icons/Menu";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import Badge from "@material-ui/core/Badge";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+import * as actions from "../../actions/user.actions";
 
 const drawerWidth = 240;
 
@@ -45,7 +50,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AppHeader = ({ open, handleDrawerOpen }) => {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const classes = useStyles();
+  const handleUserLogout = () => {
+    return dispatch(actions.logoutAction());
+  };
+  const handleUserProfile = () => {
+    history.push("/profile");
+  };
   return (
     <AppBar
       position="absolute"
@@ -70,12 +83,15 @@ const AppHeader = ({ open, handleDrawerOpen }) => {
         >
           Dashboard
         </Typography>
+        <IconButton onClick={handleUserProfile} color="inherit">
+          <AccountCircleIcon />
+        </IconButton>
         <IconButton color="inherit">
           <Badge badgeContent={0} color="secondary">
             <NotificationsIcon />
           </Badge>
         </IconButton>
-        <IconButton color="inherit">
+        <IconButton onClick={handleUserLogout} color="inherit">
           <ExitToAppIcon />
         </IconButton>
       </Toolbar>

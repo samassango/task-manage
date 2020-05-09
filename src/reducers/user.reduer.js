@@ -60,7 +60,17 @@ const userReducer = (state = initialState, actions) => {
         errorReset: actions.payload,
         isResetLoading: false,
       };
-
+    //user logout
+    case constants.LOGOUT_USER:
+      return initialState;
+    // Load initial data
+    case "@@INIT":
+      const data = JSON.parse(localStorage.getItem("__APPSTATE__"));
+      let newData = {};
+      Object.keys(data).forEach((key) => {
+        newData = { ...newData, ...data[key] };
+      });
+      return newData;
     default:
       return state;
   }

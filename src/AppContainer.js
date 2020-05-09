@@ -12,6 +12,7 @@ import JobInProgress from "./components/job-in-progress";
 import Reports from "./components/reports";
 import JobTodos from "./components/job-todos";
 import NoMatch from "./components/no-match";
+import Profile from "./components/profile";
 
 const AppContainer = () => (
   <Router>
@@ -26,6 +27,7 @@ const AppContainer = () => (
       <Route path="/job-in-progress" component={JobInProgress} />
       <Route path="/reports" component={Reports} />
       <Route path="/job-todos" component={JobTodos} />
+      <Route path="/profile" component={Profile} />
       <Route component={NoMatch} />
     </Switch>
   </Router>

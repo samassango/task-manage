@@ -10,6 +10,8 @@ import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
+import Alert from "@material-ui/lab/Alert";
+import { AlertTitle } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { useDispatch, useSelector } from "react-redux";
@@ -54,27 +56,52 @@ const SignIn = () => {
   const classes = useStyles();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const history = useHistory();
 
   const currentUser = useSelector((state) => state.user.currentUser);
+  const profile = useSelector((state) => state.user.profile);
 
   const isLoginLoading = useSelector((state) => state.user.isLoginLoading);
+
+  const errorLogin = useSelector((state) => state.user.errorLogin);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     setUsername("");
     setPassword("");
-    if (currentUser && currentUser.id) {
+
+    if (currentUser && currentUser.id && profile) {
       history.push("/");
     }
 
+    if (errorLogin) {
+      setError("Login Fail: Check username or password!");
+    }
+
     return () => false;
-  }, [currentUser, history]);
+  }, [currentUser, history, errorLogin, profile]);
 
   const handleOnClickSignIn = () => {
+    if (!inputDataValidation) {
+      return;
+    }
     return dispatch(actions.authenticateUser({ username, password }));
+  };
+
+  const inputDataValidation = () => {
+    if (username) {
+      setError("Username is required!");
+      return false;
+    } else {
+      if (password) {
+        setError("Password is required");
+        return false;
+      }
+    }
+    return true;
   };
 
   return (
@@ -84,6 +111,12 @@ const SignIn = () => {
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
+        {error && (
+          <Alert severity="error">
+            <AlertTitle>Error</AlertTitle>
+            {error}
+          </Alert>
+        )}
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>

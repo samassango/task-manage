@@ -42,10 +42,8 @@ export const authenticateUser = (credential) => {
           dispatch(loginUserSuccess(data));
           const profileUrl =
             EndpointAPI.baseUrl +
-            '/Profiles?filter={"where":{"userId":' +
-            data.userId +
-            "}}";
-          //   const reqData = { userId: data.userId };
+            "/Profiles/findOne?filter[where][userId]=" +
+            data.userId;
           dispatch(userProfileRequest());
           return axios
             .get(profileUrl)
@@ -116,3 +114,5 @@ export const createUserAccount = (params) => {
       .catch((err) => dispatch(createUserFail(err)));
   };
 };
+
+export const logoutAction = () => ({ type: constants.LOGOUT_USER });

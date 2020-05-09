@@ -2,7 +2,6 @@ import React from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Grid, Paper } from "@material-ui/core";
-
 import AppLayout from "../../app-layout";
 import Chart from "./Chart";
 import Deposits from "./Deposits";
@@ -26,7 +25,9 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = () => {
   const classes = useStyles();
+
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
   return (
     <AppLayout>
       <Container maxWidth="lg" className={classes.container}>
