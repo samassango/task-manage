@@ -67,10 +67,15 @@ const userReducer = (state = initialState, actions) => {
     case "@@INIT":
       const data = JSON.parse(localStorage.getItem("__APPSTATE__"));
       let newData = {};
-      Object.keys(data).forEach((key) => {
-        newData = { ...newData, ...data[key] };
-      });
-      return newData;
+      if (data) {
+        Object.keys(data).forEach((key) => {
+          newData = { ...newData, ...data[key] };
+        });
+        return newData;
+      } else {
+        return state;
+      }
+
     default:
       return state;
   }
