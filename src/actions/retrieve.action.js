@@ -19,9 +19,9 @@ export const getJobStatusListFail = (payload) => ({
 export const getJobStatus = () => (dispatch) => {
   dispatch(getJobStatusListRequest());
   return axios
-    .get(EndpointAPI + "/statuses")
-    .then((res) => getJobStatusListSuccess(res))
-    .catch((err) => getJobStatusListFail(err));
+    .get(EndpointAPI.baseUrl + "/statuses")
+    .then((res) => dispatch(getJobStatusListSuccess(res.data)))
+    .catch((err) => dispatch(getJobStatusListFail(err)));
 };
 
 export const getTanentListRequest = () => ({
@@ -41,9 +41,9 @@ export const getTanentListFail = (payload) => ({
 export const getTanents = () => (dispatch) => {
   dispatch(getTanentListRequest());
   return axios
-    .get(EndpointAPI + "/tanents")
-    .then((res) => getTanentListSuccess(res))
-    .catch((err) => getTanentListFail(err));
+    .get(EndpointAPI.baseUrl + "/tanents")
+    .then((res) => dispatch(getTanentListSuccess(res.data)))
+    .catch((err) => dispatch(getTanentListFail(err)));
 };
 
 export const getAllJobsRequest = () => ({
@@ -63,8 +63,8 @@ export const getAllJobsError = (payload) => ({
 export const getAllJobs = () => (dispatch) => {
   dispatch(getAllJobsRequest());
   return axios
-    .get(EndpointAPI + "/Jobs")
-    .then((res) => dispatch(getAllJobsSuccess(res)))
+    .get(EndpointAPI.baseUrl + "/Jobs")
+    .then((res) => dispatch(getAllJobsSuccess(res.data)))
     .catch((err) => dispatch(getAllJobsError(err)));
 };
 
@@ -85,8 +85,8 @@ export const getAvailableJobsError = (payload) => ({
 export const getAvailableJobs = () => (dispatch) => {
   dispatch(getAvailableJobsRequest());
   return axios
-    .get(EndpointAPI + "/Jobs?filter[where][status]=Job Card Available")
-    .then((res) => dispatch(getAvailableJobsSuccess(res)))
+    .get(EndpointAPI.baseUrl + "/Jobs?filter[where][status]=Job Card Available")
+    .then((res) => dispatch(getAvailableJobsSuccess(res.data)))
     .catch((err) => dispatch(getAvailableJobsError(err)));
 };
 
@@ -107,8 +107,10 @@ export const getInprogressJobsError = (payload) => ({
 export const getInprogressJobs = () => (dispatch) => {
   dispatch(getAvailableJobsRequest());
   return axios
-    .get(EndpointAPI + "/Jobs?filter[where][status]=Job Card In Progress")
-    .then((res) => dispatch(getInprogressJobsSuccess(res)))
+    .get(
+      EndpointAPI.baseUrl + "/Jobs?filter[where][status]=Job Card In Progress"
+    )
+    .then((res) => dispatch(getInprogressJobsSuccess(res.data)))
     .catch((err) => dispatch(getInprogressJobsError(err)));
 };
 
@@ -129,8 +131,8 @@ export const getCompleteJobsError = (payload) => ({
 export const getCompleteJobs = () => (dispatch) => {
   dispatch(getCompleteJobsRequest());
   return axios
-    .get(EndpointAPI + "/Jobs?filter[where][status]=Job Card Completed")
-    .then((res) => dispatch(getCompleteJobsSuccess(res)))
+    .get(EndpointAPI.baseUrl + "/Jobs?filter[where][status]=Job Card Completed")
+    .then((res) => dispatch(getCompleteJobsSuccess(res.data)))
     .catch((err) => dispatch(getCompleteJobsError(err)));
 };
 
@@ -151,8 +153,8 @@ export const getClosedJobsError = (payload) => ({
 export const getClosedJobs = () => (dispatch) => {
   dispatch(getClosedJobsRequest());
   return axios
-    .get(EndpointAPI + "/Jobs?filter[where][status]=Job Card Closed")
-    .then((res) => dispatch(getClosedJobsSuccess(res)))
+    .get(EndpointAPI.baseUrl + "/Jobs?filter[where][status]=Job Card Closed")
+    .then((res) => dispatch(getClosedJobsSuccess(res.data)))
     .catch((err) => dispatch(getClosedJobsError(err)));
 };
 
@@ -173,8 +175,8 @@ export const getAcceptedJobsError = (payload) => ({
 export const getAcceptedJobs = () => (dispatch) => {
   dispatch(getAcceptedJobsRequest());
   return axios
-    .get(EndpointAPI + "/Jobs?filter[where][status]=Job Card Accepted")
-    .then((res) => dispatch(getAcceptedJobsSuccess(res)))
+    .get(EndpointAPI.baseUrl + "/Jobs?filter[where][status]=Job Card Accepted")
+    .then((res) => dispatch(getAcceptedJobsSuccess(res.data)))
     .catch((err) => dispatch(getAcceptedJobsError(err)));
 };
 
@@ -195,7 +197,7 @@ export const getDoneJobsError = (payload) => ({
 export const getDoneJobs = () => (dispatch) => {
   dispatch(getDoneJobsRequest());
   return axios
-    .get(EndpointAPI + "/Jobs?filter[where][status]=Job Card Done")
-    .then((res) => dispatch(getDoneJobsSuccess(res)))
+    .get(EndpointAPI.baseUrl + "/Jobs?filter[where][status]=Job Card Done")
+    .then((res) => dispatch(getDoneJobsSuccess(res.data)))
     .catch((err) => dispatch(getDoneJobsError(err)));
 };

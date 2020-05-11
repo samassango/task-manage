@@ -5,8 +5,11 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
+import { useSelector, useDispatch } from "react-redux";
 
 import AppLayout from "../../app-layout";
+import * as actionsGet from "../../actions/retrieve.action";
+import * as actionCreate from "../../actions/create.action";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -33,6 +36,31 @@ const useStyles = makeStyles((theme) => ({
 
 const CreateJob = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const [jobTitle, setJobTitle] = React.useState("");
+  const [jobDescription, setJobDescription] = React.useState("");
+  const [budgetAmount, setBudgetAmount] = React.useState("");
+  const [skills, setSkills] = React.useState("");
+  const [status, setStatus] = React.useState("");
+
+  React.useEffect(() => {
+    dispatch(actionsGet.getJobStatus());
+    return () => false;
+  }, [dispatch]);
+
+  const statuses = useSelector((state) => state.shared.statuses.list);
+
+  const handleCreateJob = () => {
+    if (validationData()) {
+      return dispatch(actionCreate.createJob({}));
+    }
+  };
+
+  const validationData = () => {
+    return false;
+  };
+
   return (
     <AppLayout>
       <Container maxWidth="lg" className={classes.container}>
@@ -50,6 +78,8 @@ const CreateJob = () => {
                       label="Job title (short description of the job)!"
                       name="jobTitle"
                       autoComplete="jobTitle"
+                      value={jobTitle}
+                      onChange={(e) => setJobTitle(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -61,6 +91,8 @@ const CreateJob = () => {
                       label="Job full Description (detailed description of the required task)!"
                       name="jobDescription"
                       autoComplete="jobDescription"
+                      value={jobDescription}
+                      onChange={(e) => setJobDescription(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -72,6 +104,8 @@ const CreateJob = () => {
                       label="Job Budgets Amount (Amount willing to pay for job done)!"
                       name="budgetAmount"
                       autoComplete="budgetAmount"
+                      value={budgetAmount}
+                      onChange={(e) => setBudgetAmount(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -83,6 +117,8 @@ const CreateJob = () => {
                       label="Skills!"
                       name="skills"
                       autoComplete="skills"
+                      value={skills}
+                      onChange={(e) => setSkills(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -92,13 +128,18 @@ const CreateJob = () => {
                       labelId="status"
                       id="status"
                       label="Status"
+                      value={status}
+                      onChange={(e) => setStatus(e.target.value)}
                     >
                       <MenuItem value="">
                         <em>Select Status</em>
                       </MenuItem>
-                      <MenuItem value={10}>Job In progress</MenuItem>
-                      <MenuItem value={20}>Job Available</MenuItem>
-                      <MenuItem value={30}>Job Completed</MenuItem>
+                      {statuses &&
+                        statuses.map((status) => {
+                          return (
+                            <MenuItem value={status.id}>{status.name}</MenuItem>
+                          );
+                        })}
                     </Select>
                   </Grid>
                   <Grid item xs={12}>
@@ -107,6 +148,7 @@ const CreateJob = () => {
                       variant="contained"
                       color="primary"
                       className={classes.submit}
+                      onClick={handleCreateJob}
                     >
                       Create Job
                     </Button>

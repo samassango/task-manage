@@ -14,7 +14,7 @@ export const createJobFail = (payload) => ({
 export const createJob = (param) => (dispatch) => {
   dispatch(createJobRequest());
   return axios
-    .post(EndpointAPI + "/Jobs", param)
+    .post(EndpointAPI.baseUrl + "/Jobs", param)
     .then((res) => dispatch(createJobSuccess(res)))
     .catch((err) => dispatch(createJobFail(err)));
 };
@@ -33,7 +33,7 @@ export const createTanentFail = (payload) => ({
 export const createTanent = (param) => (dispatch) => {
   dispatch(createTanentRequest());
   return axios
-    .post(EndpointAPI + "/tanents", param)
+    .post(EndpointAPI.baseUrl + "/tanents", param)
     .then((res) => dispatch(createTanentSuccess(res)))
     .catch((err) => dispatch(createTanentFail(err)));
 };
