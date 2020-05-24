@@ -4,11 +4,13 @@ const initialState = {
     list: null,
     error: null,
     isLoading: false,
+    success: false,
   },
   statuses: {
     list: null,
     error: null,
     isLoading: false,
+    success: false,
   },
 };
 
@@ -27,6 +29,7 @@ const sharedReducer = (state = initialState, actions) => {
         statuses: {
           list: actions.payload,
           isLoading: false,
+          success: false,
         },
       };
     case constants.GET_JOB_STATUS_LIST_FAIL:
@@ -50,6 +53,7 @@ const sharedReducer = (state = initialState, actions) => {
         tanents: {
           list: actions.payload,
           isLoading: false,
+          success: false,
         },
       };
     case constants.GET_TANENT_LIST_FAIL:

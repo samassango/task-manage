@@ -7,7 +7,6 @@ import DataTable, { createTheme } from "react-data-table-component";
 import AppLayout from "../../app-layout";
 import * as actionRetrieve from "../../actions/retrieve.action";
 import LoadingIndicator from "../shared/loadingIndicator";
-import { updateJobList } from "../shared/helper/utils.helper";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -49,18 +48,23 @@ createTheme("solarized", {
 
 const columns = [
   {
-    name: "Title",
+    name: "Job Title",
     selector: "title",
     sortable: true,
   },
   {
-    name: "Description",
+    name: "Job Description",
     selector: "description",
     sortable: true,
   },
   {
-    name: "Status",
+    name: "Job Current Status",
     selector: "status",
+    sortable: true,
+  },
+  {
+    name: "Created By",
+    selector: "author",
     sortable: true,
   },
   {
@@ -75,6 +79,17 @@ const columns = [
     right: true,
   },
 ];
+
+const createData = (jobs) => {
+  const newData = [];
+  if (Array.isArray(jobs)) {
+    jobs.forEach((job) => {
+      const { status, User, ...rest } = job;
+      newData.push({ ...rest, status: status.name, author: User.realm });
+    });
+  }
+  return newData;
+};
 
 const AvailableJobs = () => {
   const classes = useStyles();
@@ -92,13 +107,12 @@ const AvailableJobs = () => {
   const loadingIndicator = useSelector(
     (state) => state.jobs.availableJobs.isLoading
   );
-  const statuses = useSelector((state) => state.shared.statuses.list);
 
   const handleSelectedRow = (state) => {
     setToggledClearRows(!toggledClearRows);
     console.log("Selected Rows: ", state.selectedRows);
   };
-  const updatedJobData = updateJobList(jobs, "status", statuses, "id", "name");
+  const updatedJobData = createData(jobs);
 
   return (
     <AppLayout>

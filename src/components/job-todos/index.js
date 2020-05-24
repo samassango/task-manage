@@ -2,8 +2,32 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Grid, Paper, Typography } from "@material-ui/core";
 import Board, { moveCard } from "@lourenci/react-kanban";
+import { useSelector, useDispatch } from "react-redux";
+import Alert from "@material-ui/lab/Alert";
 
 import AppLayout from "../../app-layout";
+import LoadingIndicator from "../shared/loadingIndicator";
+import * as actionRetrieve from "../../actions/retrieve.action";
+
+const initialBoard = (statuses) => {
+  const newStatusData = [];
+  if (Array.isArray(statuses)) {
+    statuses.forEach((status, index) => {
+      newStatusData.push({
+        id: index + 1,
+        title: status.name,
+        cards: [
+          {
+            id: index + 1,
+            title: "Job available" + index,
+            description: "testing job board content",
+          },
+        ],
+      });
+    });
+  }
+  return { columns: newStatusData };
+};
 
 const board = {
   columns: [
@@ -79,22 +103,6 @@ const board = {
   ],
 };
 
-const ControlledBoard = () => {
-  // You need to control the state yourself.
-  const [controlledBoard, setBoard] = useState(board);
-
-  function handleCardMove(_card, source, destination) {
-    const updatedBoard = moveCard(controlledBoard, source, destination);
-    setBoard(updatedBoard);
-  }
-
-  return (
-    <Board onCardDragEnd={handleCardMove} disableColumnDrag>
-      {controlledBoard}
-    </Board>
-  );
-};
-
 const useStyles = makeStyles((theme) => ({
   container: {
     paddingTop: theme.spacing(4),
@@ -113,12 +121,38 @@ const useStyles = makeStyles((theme) => ({
 
 const JobToDos = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const [boardBeta, setBoardBeta] = useState(null);
+
+  React.useEffect(() => {
+    dispatch(actionRetrieve.getAllJobs());
+    return () => false;
+  }, [dispatch]);
+
+  const statuses = useSelector((state) => state.shared.statuses.list);
+  const isLoading = useSelector((state) => state.shared.statuses.isLoading);
+  const jobs = useSelector((state) => state.jobs.allJobs.jobs);
+  const loadingJobs = useSelector((state) => state.jobs.allJobs.isLoading);
+
+  React.useEffect(() => {
+    const boardBETA = initialBoard(statuses);
+    console.log({ boardBETA, statuses });
+    setBoardBeta(boardBETA);
+    return () => false;
+  }, [statuses]);
+
+  function handleCardMove(_card, source, destination) {
+    const updatedBoard = moveCard(boardBeta, source, destination);
+    setBoardBeta(updatedBoard);
+  }
+
   return (
     <AppLayout>
       <Container maxWidth="lg" className={classes.container}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
+              {(isLoading || loadingJobs) && <LoadingIndicator />}
               <Typography
                 component="h2"
                 variant="h6"
@@ -127,7 +161,13 @@ const JobToDos = () => {
               >
                 Job Cart Todos
               </Typography>
-              <ControlledBoard />
+              {!!boardBeta ? (
+                <Board onCardDragEnd={handleCardMove} disableColumnDrag>
+                  {boardBeta}
+                </Board>
+              ) : (
+                <Alert severity="success">Still loading job cards!</Alert>
+              )}
             </Paper>
           </Grid>
         </Grid>
@@ -136,3 +176,4 @@ const JobToDos = () => {
   );
 };
 export default JobToDos;
+// <ControlledBoardBETA boardBETA={boardBeta} />

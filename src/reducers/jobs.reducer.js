@@ -50,6 +50,18 @@ const initialStata = {
     success: false,
     error: null,
   },
+  jobPreview: {
+    job: null,
+    success: false,
+    isLoading: false,
+    error: null,
+  },
+  currentUserJobs: {
+    jobs: null,
+    isLoading: false,
+    success: false,
+    error: null,
+  },
 };
 
 const jobsReducer = (state = initialStata, actions) => {
@@ -261,6 +273,63 @@ const jobsReducer = (state = initialStata, actions) => {
         },
       };
     // closed jobs ends
+    //Job preview start
+    case retrieveConstants.GET_JOB_BY_JOB_ID_REQUEST:
+      return {
+        ...state,
+        jobPreview: {
+          ...state.jobPreview,
+          isLoading: true,
+        },
+      };
+    case retrieveConstants.GET_JOB_BY_JOB_ID_SUCCESS:
+      return {
+        ...state,
+        jobPreview: {
+          ...state.jobPreview,
+          isLoading: false,
+          job: actions.payload,
+        },
+      };
+    case retrieveConstants.GET_JOB_BY_JOB_ID_FAIL:
+      return {
+        ...state,
+        jobPreview: {
+          ...state.jobPreview,
+          isLoading: false,
+          error: actions.payload,
+        },
+      };
+    //JOb preview ends
+    //current user Jobs start
+    case retrieveConstants.GET_ALL_JOBS_BY_USER_REQUEST:
+      return {
+        ...state,
+        currentUserJobs: {
+          ...state.currentUserJobs,
+          isLoading: true,
+        },
+      };
+    case retrieveConstants.GET_ALL_JOBS_BY_USER_SUCCESS:
+      return {
+        ...state,
+        currentUserJobs: {
+          ...state.currentUserJobs,
+          isLoading: false,
+          success: true,
+          jobs: actions.payload,
+        },
+      };
+    case retrieveConstants.GET_ALL_JOBS_BY_USER_FAIL:
+      return {
+        ...state,
+        currentUserJobs: {
+          ...state.currentUserJobs,
+          isLoading: false,
+          error: actions.payload,
+        },
+      };
+    //Current user Jobs ends
     default:
       return state;
   }

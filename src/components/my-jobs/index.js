@@ -92,19 +92,22 @@ const createData = (jobs) => {
   return newData;
 };
 
-const AllJobs = () => {
+const AllJobsCreatedByCurrentUser = () => {
   const classes = useStyles();
   const [toggledClearRows, setToggledClearRows] = React.useState(false);
 
   const dispatch = useDispatch();
+  const currentUser = useSelector((state) => state.user.currentUser);
 
   React.useEffect(() => {
-    dispatch(actionRetrieve.getAllJobs());
+    dispatch(actionRetrieve.getAllJobsByUserId({ userId: currentUser.userId }));
     return () => false;
-  }, [dispatch]);
+  }, [dispatch, currentUser]);
 
-  const jobs = useSelector((state) => state.jobs.allJobs.jobs);
-  const loadingIndicator = useSelector((state) => state.jobs.allJobs.isLoading);
+  const jobs = useSelector((state) => state.jobs.currentUserJobs.jobs);
+  const loadingIndicator = useSelector(
+    (state) => state.jobs.currentUserJobs.isLoading
+  );
 
   const handleSelectedRow = (state) => {
     setToggledClearRows(!toggledClearRows);
@@ -121,7 +124,7 @@ const AllJobs = () => {
               {loadingIndicator && <LoadingIndicator />}
               {!!jobs ? (
                 <DataTable
-                  title="All Jobs"
+                  title="All My Jobs"
                   columns={columns}
                   data={updatedJobData}
                   selectableRows // add for checkbox selection
@@ -139,4 +142,4 @@ const AllJobs = () => {
     </AppLayout>
   );
 };
-export default AllJobs;
+export default AllJobsCreatedByCurrentUser;

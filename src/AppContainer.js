@@ -13,6 +13,7 @@ import Reports from "./components/reports";
 import JobTodos from "./components/job-todos";
 import NoMatch from "./components/no-match";
 import Profile from "./components/profile";
+import AllJobsCreatedByCurrentUser from "./components/my-jobs";
 
 const AppContainer = () => (
   <Router>
@@ -24,6 +25,7 @@ const AppContainer = () => (
       <Route path="/create-job" component={CreateJob} />
       <Route path="/available-job" component={AvailableJobs} />
       <Route path="/all-jobs" component={AllJobs} />
+      <Route path="/my-jobs" component={AllJobsCreatedByCurrentUser} />
       <Route path="/job-in-progress" component={JobInProgress} />
       <Route path="/reports" component={Reports} />
       <Route path="/job-todos" component={JobTodos} />

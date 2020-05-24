@@ -63,12 +63,43 @@ export const getAllJobsError = (payload) => ({
 export const getAllJobs = () => (dispatch) => {
   dispatch(getAllJobsRequest());
   return axios
-    .get(EndpointAPI.baseUrl + "/Jobs")
+    .get(
+      EndpointAPI.baseUrl + "/Jobs?filter[include]=status&filter[include]=User"
+    )
     .then((res) => {
       console.log({ res });
       return dispatch(getAllJobsSuccess(res.data));
     })
     .catch((err) => dispatch(getAllJobsError(err)));
+};
+
+export const getAllJobsByUserRequest = () => ({
+  type: constants.GET_ALL_JOBS_BY_USER_REQUEST,
+});
+
+export const getAllJobsByUserSuccess = (payload) => ({
+  type: constants.GET_ALL_JOBS_BY_USER_SUCCESS,
+  payload,
+});
+
+export const getAllJobsByUserError = (payload) => ({
+  type: constants.GET_ALL_JOBS_BY_USER_FAIL,
+  payload,
+});
+
+export const getAllJobsByUserId = (param = { userId: null }) => (dispatch) => {
+  dispatch(getAllJobsByUserRequest());
+  return axios
+    .get(
+      EndpointAPI.baseUrl +
+        "/Jobs?filter[include]=status&filter[include]=User&filter[where][author]=" +
+        param.userId
+    )
+    .then((res) => {
+      console.log({ res });
+      return dispatch(getAllJobsByUserSuccess(res.data));
+    })
+    .catch((err) => dispatch(getAllJobsByUserError(err)));
 };
 
 export const getAvailableJobsRequest = () => ({
@@ -90,7 +121,7 @@ export const getAvailableJobs = () => (dispatch) => {
   return axios
     .get(
       EndpointAPI.baseUrl +
-        "/Jobs?filter[where][status]=5eb72dcd04c7b90017494208"
+        "/Jobs?filter[include]=status&filter[include]=User&filter[where][status]=5eb72dcd04c7b90017494208"
     )
     .then((res) => dispatch(getAvailableJobsSuccess(res.data)))
     .catch((err) => dispatch(getAvailableJobsError(err)));
@@ -115,7 +146,7 @@ export const getInprogressJobs = () => (dispatch) => {
   return axios
     .get(
       EndpointAPI.baseUrl +
-        "/Jobs?filter[where][status]=5eb72e5004c7b9001749420a"
+        "/Jobs?filter[include]=status&filter[include]=User&filter[where][status]=5eb72e5004c7b9001749420a"
     )
     .then((res) => dispatch(getInprogressJobsSuccess(res.data)))
     .catch((err) => dispatch(getInprogressJobsError(err)));
@@ -140,7 +171,7 @@ export const getCompleteJobs = () => (dispatch) => {
   return axios
     .get(
       EndpointAPI.baseUrl +
-        "/Jobs?filter[where][status]=5eb72e6c04c7b9001749420b"
+        "/Jobs?filter[include]=status&filter[include]=User&filter[where][status]=5eb72e6c04c7b9001749420b"
     )
     .then((res) => dispatch(getCompleteJobsSuccess(res.data)))
     .catch((err) => dispatch(getCompleteJobsError(err)));
@@ -165,7 +196,7 @@ export const getClosedJobs = () => (dispatch) => {
   return axios
     .get(
       EndpointAPI.baseUrl +
-        "/Jobs?filter[where][status]=5eb72f0604c7b9001749420d"
+        "/Jobs?filter[include]=status&filter[include]=User&filter[where][status]=5eb72f0604c7b9001749420d"
     )
     .then((res) => dispatch(getClosedJobsSuccess(res.data)))
     .catch((err) => dispatch(getClosedJobsError(err)));
@@ -190,7 +221,7 @@ export const getAcceptedJobs = () => (dispatch) => {
   return axios
     .get(
       EndpointAPI.baseUrl +
-        "/Jobs?filter[where][status]=5eb72e1c04c7b90017494209"
+        "/Jobs?filter[include]=status&filter[include]=User&filter[where][status]=5eb72e1c04c7b90017494209"
     )
     .then((res) => dispatch(getAcceptedJobsSuccess(res.data)))
     .catch((err) => dispatch(getAcceptedJobsError(err)));
@@ -215,8 +246,30 @@ export const getDoneJobs = () => (dispatch) => {
   return axios
     .get(
       EndpointAPI.baseUrl +
-        "/Jobs?filter[where][status]=5eb72e8404c7b9001749420c"
+        "/Jobs?filter[include]=status&filter[include]=User&filter[where][status]=5eb72e8404c7b9001749420c"
     )
     .then((res) => dispatch(getDoneJobsSuccess(res.data)))
     .catch((err) => dispatch(getDoneJobsError(err)));
+};
+
+export const getJobByIdRequest = () => ({
+  type: constants.GET_JOB_BY_JOB_ID_REQUEST,
+});
+export const getJobByIdSuccess = (payload) => ({
+  type: constants.GET_JOB_BY_JOB_ID_SUCCESS,
+  payload,
+});
+export const getJobByIdFail = (payload) => ({
+  type: constants.GET_JOB_BY_JOB_ID_FAIL,
+  payload,
+});
+export const getAllJobsByUser = (param = { jobId: null }) => (dispatch) => {
+  dispatch(getJobByIdRequest());
+  return axios
+    .get(
+      EndpointAPI.baseUrl +
+        `/Jobs/${param.jobId}?filter[include]=status&filter[include]=User`
+    )
+    .then((res) => dispatch(getJobByIdSuccess(res.data)))
+    .catch((err) => dispatch(getJobByIdFail(err)));
 };

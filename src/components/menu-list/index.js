@@ -23,7 +23,7 @@ export const MainListItems = () => {
     <List>
       <ListItem button onClick={(event) => handleListItemClick(event, "/")}>
         <ListItemIcon>
-          <DashboardIcon />
+          <DashboardIcon color="primary" />
         </ListItemIcon>
         <ListItemText primary="Dashboard" />
       </ListItem>
@@ -32,16 +32,25 @@ export const MainListItems = () => {
         onClick={(event) => handleListItemClick(event, "/create-job")}
       >
         <ListItemIcon>
-          <AddBoxIcon />
+          <AddBoxIcon color="primary" />
         </ListItemIcon>
         <ListItemText primary="Create Job" />
+      </ListItem>
+      <ListItem
+        button
+        onClick={(event) => handleListItemClick(event, "/my-jobs")}
+      >
+        <ListItemIcon>
+          <ListIcon color="primary" />
+        </ListItemIcon>
+        <ListItemText primary="My Job list" />
       </ListItem>
       <ListItem
         button
         onClick={(event) => handleListItemClick(event, "/available-job")}
       >
         <ListItemIcon>
-          <WorkIcon />
+          <WorkIcon color="primary" />
         </ListItemIcon>
         <ListItemText primary="Available Jobs" />
       </ListItem>
@@ -50,7 +59,7 @@ export const MainListItems = () => {
         onClick={(event) => handleListItemClick(event, "/job-todos")}
       >
         <ListItemIcon>
-          <FormatListBulletedIcon />
+          <FormatListBulletedIcon color="primary" />
         </ListItemIcon>
         <ListItemText primary="Jobs ToDos" />
       </ListItem>
@@ -59,7 +68,7 @@ export const MainListItems = () => {
         onClick={(event) => handleListItemClick(event, "/all-jobs")}
       >
         <ListItemIcon>
-          <ListIcon />
+          <ListIcon color="primary" />
         </ListItemIcon>
         <ListItemText primary="All Jobs" />
       </ListItem>
@@ -68,7 +77,7 @@ export const MainListItems = () => {
         onClick={(event) => handleListItemClick(event, "/job-in-progress")}
       >
         <ListItemIcon>
-          <ViewListIcon />
+          <ViewListIcon color="primary" />
         </ListItemIcon>
         <ListItemText primary="Jobs In Progress" />
       </ListItem>
@@ -90,7 +99,7 @@ export const SecondaryListItems = () => {
         onClick={(event) => handleListItemClick(event, "/reports")}
       >
         <ListItemIcon>
-          <AssignmentIcon />
+          <AssignmentIcon color="primary" />
         </ListItemIcon>
         <ListItemText primary="View Reports" />
       </ListItem>
