@@ -4,6 +4,7 @@ import { Container, Grid, Paper, Typography } from "@material-ui/core";
 import Board, { moveCard } from "@lourenci/react-kanban";
 import { useSelector, useDispatch } from "react-redux";
 import Alert from "@material-ui/lab/Alert";
+import _ from "lodash";
 
 import AppLayout from "../../app-layout";
 import LoadingIndicator from "../shared/loadingIndicator";
@@ -14,7 +15,7 @@ const initialBoard = (statuses) => {
   if (Array.isArray(statuses)) {
     statuses.forEach((status, index) => {
       newStatusData.push({
-        id: index + 1,
+        id: status.id,
         title: status.name,
         cards: [
           {
@@ -26,7 +27,39 @@ const initialBoard = (statuses) => {
       });
     });
   }
+  newStatusData.push({
+    id: 90,
+    title: "test",
+    cards: [],
+  });
   return { columns: newStatusData };
+};
+const createBoard = (statuses, jobslist) => {
+  const newDataBoard = [];
+  if (Array.isArray(statuses) && Array.isArray(jobslist)) {
+    statuses.forEach((status) => {
+      const cards = [];
+      jobslist.forEach((job) => {
+        const {
+          status: { id },
+        } = job;
+        if (id === status.id) {
+          cards.push({
+            id: job.id,
+            title: _.startCase(_.capitalize(job.title)),
+            description: _.capitalize(job.description),
+          });
+        }
+      });
+      const { id, name } = status;
+      newDataBoard.push({
+        id,
+        title: name,
+        cards,
+      });
+    });
+  }
+  return { columns: newDataBoard };
 };
 
 const board = {
@@ -117,6 +150,9 @@ const useStyles = makeStyles((theme) => ({
   fixedHeight: {
     height: 240,
   },
+  cards: {
+    width: 300,
+  },
 }));
 
 const JobToDos = () => {
@@ -134,12 +170,19 @@ const JobToDos = () => {
   const jobs = useSelector((state) => state.jobs.allJobs.jobs);
   const loadingJobs = useSelector((state) => state.jobs.allJobs.isLoading);
 
+  //   React.useEffect(() => {
+  //     const boardBETA = initialBoard(statuses);
+  //     console.log({ boardBETA, statuses });
+  //     setBoardBeta(boardBETA);
+  //     return () => false;
+  //   }, [statuses]);
+
   React.useEffect(() => {
-    const boardBETA = initialBoard(statuses);
-    console.log({ boardBETA, statuses });
+    const boardBETA = createBoard(statuses, jobs);
+    console.log({ boardBETA });
     setBoardBeta(boardBETA);
     return () => false;
-  }, [statuses]);
+  }, [jobs, statuses]);
 
   function handleCardMove(_card, source, destination) {
     const updatedBoard = moveCard(boardBeta, source, destination);
@@ -161,7 +204,7 @@ const JobToDos = () => {
               >
                 Job Cart Todos
               </Typography>
-              {!!boardBeta ? (
+              {!!boardBeta && boardBeta.length !== 0 ? (
                 <Board onCardDragEnd={handleCardMove} disableColumnDrag>
                   {boardBeta}
                 </Board>

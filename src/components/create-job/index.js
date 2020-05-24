@@ -3,13 +3,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Container, Grid, Paper } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
+import Typography from "@material-ui/core/Typography";
 import { useSelector, useDispatch } from "react-redux";
 import Alert from "@material-ui/lab/Alert";
 import { AlertTitle } from "@material-ui/lab";
 
 import AppLayout from "../../app-layout";
+import LoadingIndicator from "../shared/loadingIndicator";
 import * as actionsGet from "../../actions/retrieve.action";
 import * as actionCreate from "../../actions/create.action";
 
@@ -55,6 +55,7 @@ const CreateJob = () => {
   //   const statuses = useSelector((state) => state.shared.statuses.list);
   const currentUser = useSelector((state) => state.user.currentUser);
   const job = useSelector((state) => state.jobs.createJob.job);
+  const isLoading = useSelector((state) => state.jobs.createJob.isLoading);
   const success = useSelector((state) => state.jobs.createJob.success);
 
   React.useEffect(() => {
@@ -112,6 +113,15 @@ const CreateJob = () => {
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
+              {isLoading && <LoadingIndicator />}
+              <Typography
+                component="h2"
+                variant="h6"
+                color="primary"
+                gutterBottom
+              >
+                Create new job request!
+              </Typography>
               {error && (
                 <Alert severity="error">
                   <AlertTitle>Error</AlertTitle>
@@ -186,6 +196,7 @@ const CreateJob = () => {
                       color="primary"
                       className={classes.submit}
                       onClick={handleCreateJob}
+                      disabled={isLoading}
                     >
                       Create Job
                     </Button>

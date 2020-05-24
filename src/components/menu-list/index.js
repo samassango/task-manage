@@ -10,6 +10,7 @@ import AddBoxIcon from "@material-ui/icons/AddBox";
 import ListIcon from "@material-ui/icons/List";
 import ViewListIcon from "@material-ui/icons/ViewList";
 import FormatListBulletedIcon from "@material-ui/icons/FormatListBulleted";
+import ListAltIcon from "@material-ui/icons/ListAlt";
 import { useHistory } from "react-router-dom";
 import { List } from "@material-ui/core";
 
@@ -41,7 +42,7 @@ export const MainListItems = () => {
         onClick={(event) => handleListItemClick(event, "/my-jobs")}
       >
         <ListItemIcon>
-          <ListIcon color="primary" />
+          <ListAltIcon color="primary" />
         </ListItemIcon>
         <ListItemText primary="My Job list" />
       </ListItem>
