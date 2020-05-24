@@ -1,12 +1,13 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import AppFooter from "../components/app-footer";
 import AppHeader from "../components/app-header";
 import DrawerUI from "../components/drawer";
+import * as actionsGet from "../actions/retrieve.action";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 const AppLayout = ({ children }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [open, setOpen] = React.useState(true);
   const currentUser = useSelector((state) => state.user.currentUser);
   const profile = useSelector((state) => state.user.profile);
@@ -46,6 +48,11 @@ const AppLayout = ({ children }) => {
     }
     return () => false;
   }, [currentUser, history, profile]);
+
+  React.useEffect(() => {
+    dispatch(actionsGet.getJobStatus());
+    return () => false;
+  }, [dispatch]);
 
   return (
     <div className={classes.root}>

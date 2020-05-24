@@ -51,12 +51,12 @@ export const getAllJobsRequest = () => ({
 });
 
 export const getAllJobsSuccess = (payload) => ({
-  type: constants.GET_ALL_JOBS_REQUEST,
+  type: constants.GET_ALL_JOBS_SUCCESS,
   payload,
 });
 
 export const getAllJobsError = (payload) => ({
-  type: constants.GET_ALL_JOBS_REQUEST,
+  type: constants.GET_ALL_JOBS_FAIL,
   payload,
 });
 
@@ -64,7 +64,10 @@ export const getAllJobs = () => (dispatch) => {
   dispatch(getAllJobsRequest());
   return axios
     .get(EndpointAPI.baseUrl + "/Jobs")
-    .then((res) => dispatch(getAllJobsSuccess(res.data)))
+    .then((res) => {
+      console.log({ res });
+      return dispatch(getAllJobsSuccess(res.data));
+    })
     .catch((err) => dispatch(getAllJobsError(err)));
 };
 
@@ -85,7 +88,10 @@ export const getAvailableJobsError = (payload) => ({
 export const getAvailableJobs = () => (dispatch) => {
   dispatch(getAvailableJobsRequest());
   return axios
-    .get(EndpointAPI.baseUrl + "/Jobs?filter[where][status]=Job Card Available")
+    .get(
+      EndpointAPI.baseUrl +
+        "/Jobs?filter[where][status]=5eb72dcd04c7b90017494208"
+    )
     .then((res) => dispatch(getAvailableJobsSuccess(res.data)))
     .catch((err) => dispatch(getAvailableJobsError(err)));
 };
@@ -108,7 +114,8 @@ export const getInprogressJobs = () => (dispatch) => {
   dispatch(getAvailableJobsRequest());
   return axios
     .get(
-      EndpointAPI.baseUrl + "/Jobs?filter[where][status]=Job Card In Progress"
+      EndpointAPI.baseUrl +
+        "/Jobs?filter[where][status]=5eb72e5004c7b9001749420a"
     )
     .then((res) => dispatch(getInprogressJobsSuccess(res.data)))
     .catch((err) => dispatch(getInprogressJobsError(err)));
@@ -131,7 +138,10 @@ export const getCompleteJobsError = (payload) => ({
 export const getCompleteJobs = () => (dispatch) => {
   dispatch(getCompleteJobsRequest());
   return axios
-    .get(EndpointAPI.baseUrl + "/Jobs?filter[where][status]=Job Card Completed")
+    .get(
+      EndpointAPI.baseUrl +
+        "/Jobs?filter[where][status]=5eb72e6c04c7b9001749420b"
+    )
     .then((res) => dispatch(getCompleteJobsSuccess(res.data)))
     .catch((err) => dispatch(getCompleteJobsError(err)));
 };
@@ -153,7 +163,10 @@ export const getClosedJobsError = (payload) => ({
 export const getClosedJobs = () => (dispatch) => {
   dispatch(getClosedJobsRequest());
   return axios
-    .get(EndpointAPI.baseUrl + "/Jobs?filter[where][status]=Job Card Closed")
+    .get(
+      EndpointAPI.baseUrl +
+        "/Jobs?filter[where][status]=5eb72f0604c7b9001749420d"
+    )
     .then((res) => dispatch(getClosedJobsSuccess(res.data)))
     .catch((err) => dispatch(getClosedJobsError(err)));
 };
@@ -175,7 +188,10 @@ export const getAcceptedJobsError = (payload) => ({
 export const getAcceptedJobs = () => (dispatch) => {
   dispatch(getAcceptedJobsRequest());
   return axios
-    .get(EndpointAPI.baseUrl + "/Jobs?filter[where][status]=Job Card Accepted")
+    .get(
+      EndpointAPI.baseUrl +
+        "/Jobs?filter[where][status]=5eb72e1c04c7b90017494209"
+    )
     .then((res) => dispatch(getAcceptedJobsSuccess(res.data)))
     .catch((err) => dispatch(getAcceptedJobsError(err)));
 };
@@ -197,7 +213,10 @@ export const getDoneJobsError = (payload) => ({
 export const getDoneJobs = () => (dispatch) => {
   dispatch(getDoneJobsRequest());
   return axios
-    .get(EndpointAPI.baseUrl + "/Jobs?filter[where][status]=Job Card Done")
+    .get(
+      EndpointAPI.baseUrl +
+        "/Jobs?filter[where][status]=5eb72e8404c7b9001749420c"
+    )
     .then((res) => dispatch(getDoneJobsSuccess(res.data)))
     .catch((err) => dispatch(getDoneJobsError(err)));
 };

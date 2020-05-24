@@ -4,6 +4,7 @@ const initialState = {
   profile: null,
   signup: null,
   reset: null,
+  success: false,
   isLoginLoading: false,
   isSignUpLoading: false,
   isProfileLoading: false,

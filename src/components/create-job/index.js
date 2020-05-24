@@ -6,6 +6,8 @@ import Button from "@material-ui/core/Button";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import { useSelector, useDispatch } from "react-redux";
+import Alert from "@material-ui/lab/Alert";
+import { AlertTitle } from "@material-ui/lab";
 
 import AppLayout from "../../app-layout";
 import * as actionsGet from "../../actions/retrieve.action";
@@ -43,21 +45,64 @@ const CreateJob = () => {
   const [budgetAmount, setBudgetAmount] = React.useState("");
   const [skills, setSkills] = React.useState("");
   const [status, setStatus] = React.useState("");
+  const [error, setError] = React.useState("");
 
   React.useEffect(() => {
     dispatch(actionsGet.getJobStatus());
     return () => false;
   }, [dispatch]);
 
-  const statuses = useSelector((state) => state.shared.statuses.list);
+  //   const statuses = useSelector((state) => state.shared.statuses.list);
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const job = useSelector((state) => state.jobs.createJob.job);
+  const success = useSelector((state) => state.jobs.createJob.success);
+
+  React.useEffect(() => {
+    setJobDescription("");
+    setJobTitle("");
+    setBudgetAmount("");
+    setSkills("");
+    setStatus("");
+    setError("");
+    return () => false;
+  }, [job]);
 
   const handleCreateJob = () => {
+    const skillList = skills.split(",");
+    console.log(skillList);
     if (validationData()) {
-      return dispatch(actionCreate.createJob({}));
+      return dispatch(
+        actionCreate.createJob({
+          title: jobTitle,
+          description: jobDescription,
+          skills: skillList,
+          status: "5eb72dcd04c7b90017494208",
+          budget: budgetAmount,
+          verified: false,
+          author: currentUser.userId,
+        })
+      );
     }
   };
 
   const validationData = () => {
+    if (jobTitle) {
+      if (jobDescription) {
+        if (skills) {
+          if (budgetAmount) {
+            return true;
+          } else {
+            setError("Budget Amount is required!");
+          }
+        } else {
+          setError("Skills is required!");
+        }
+      } else {
+        setError("Job description is required!");
+      }
+    } else {
+      setError("Job title is required!");
+    }
     return false;
   };
 
@@ -67,6 +112,18 @@ const CreateJob = () => {
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Paper className={classes.paper}>
+              {error && (
+                <Alert severity="error">
+                  <AlertTitle>Error</AlertTitle>
+                  {error}
+                </Alert>
+              )}
+              {success && (
+                <Alert severity="success">
+                  Successfully created a new job card. User with matching skills
+                  will be notified.
+                </Alert>
+              )}
               <form className={classes.form} noValidate>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
@@ -114,34 +171,14 @@ const CreateJob = () => {
                       required
                       fullWidth
                       id="skills"
-                      label="Skills!"
+                      label="Required Skills (separated by comma eg: teacher, leader)!"
                       name="skills"
                       autoComplete="skills"
                       value={skills}
                       onChange={(e) => setSkills(e.target.value)}
                     />
                   </Grid>
-                  <Grid item xs={12}>
-                    <Select
-                      variant="outlined"
-                      fullWidth
-                      labelId="status"
-                      id="status"
-                      label="Status"
-                      value={status}
-                      onChange={(e) => setStatus(e.target.value)}
-                    >
-                      <MenuItem value="">
-                        <em>Select Status</em>
-                      </MenuItem>
-                      {statuses &&
-                        statuses.map((status) => {
-                          return (
-                            <MenuItem value={status.id}>{status.name}</MenuItem>
-                          );
-                        })}
-                    </Select>
-                  </Grid>
+
                   <Grid item xs={12}>
                     <Button
                       fullWidth
@@ -163,3 +200,25 @@ const CreateJob = () => {
   );
 };
 export default CreateJob;
+
+// <Grid item xs={12}>
+//                     <Select
+//                       variant="outlined"
+//                       fullWidth
+//                       labelId="status"
+//                       id="status"
+//                       label="Status"
+//                       value={status}
+//                       onChange={(e) => setStatus(e.target.value)}
+//                     >
+//                       <MenuItem value="">
+//                         <em>Select Status</em>
+//                       </MenuItem>
+//                       {statuses &&
+//                         statuses.map((status) => {
+//                           return (
+//                             <MenuItem value={status.id}>{status.name}</MenuItem>
+//                           );
+//                         })}
+//                     </Select>
+//                   </Grid>

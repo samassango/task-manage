@@ -125,7 +125,7 @@ const JobToDos = () => {
                 color="primary"
                 gutterBottom
               >
-                Job Accepted
+                Job Cart Todos
               </Typography>
               <ControlledBoard />
             </Paper>
